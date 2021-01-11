@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="com.example.mynfcapp.MainActivity">
 
+
     <ImageView
-        android:id="@+id/logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="50dp"
+        android:id="@+id/imageView"
+        android:layout_width="227dp"
+        android:layout_height="232dp"
         android:src="@drawable/logo"
-        android:layout_centerHorizontal="true"/>
+        android:transitionName="logo_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.397" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="sans-serif"
+        android:text="Welcome!"
+        android:textColor="#6D7073"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Hold a tag against the back of your device"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="50dp"
-        android:gravity="center_horizontal"
-        android:layout_below="@id/logo"/>
+        android:layout_marginTop="160dp"
+        android:fontFamily="sans-serif-black"
+        android:text="An Application by Gabriel Vieira"
+        android:textColor="#020202"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:fontFamily="sans-serif-black"
+        tools:textSize="10dp" />
 
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
