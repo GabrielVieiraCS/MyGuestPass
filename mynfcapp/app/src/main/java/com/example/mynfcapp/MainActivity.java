@@ -51,8 +51,9 @@ public class MainActivity extends Activity {
             public void run() {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 
-                Pair[] pairs = new Pair[1];
+                Pair[] pairs = new Pair[2];
                 pairs[0] = new Pair<View, String>(image, "logo_image");
+                pairs[1] = new Pair<View, String>(welcome, "logo_text");
 
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, pairs);
                 startActivity(intent, options.toBundle());

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "974835861586",
+    "project_id": "mynfcapp-323b7",
+    "storage_bucket": "mynfcapp-323b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974835861586:android:a9a844a8f7b224c467f78b",
+        "android_client_info": {
+          "package_name": "com.example.mynfcapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974835861586-pcogjrb11nl1jenpdrip9icsckcccc9a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcC9-35ImVLNhhCXgZrtiISZ-E1e_YfL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974835861586-pcogjrb11nl1jenpdrip9icsckcccc9a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

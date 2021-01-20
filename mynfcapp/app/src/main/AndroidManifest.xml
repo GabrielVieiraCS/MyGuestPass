@@ -8,11 +8,13 @@
         android:name="android.hardware.nfc"
         android:required="true" />
 
-    <application
-        android:theme="@style/Theme.Mynfcapp.NoActionBar">
+    <application android:theme="@style/Theme.Mynfcapp.NoActionBar">
+        <activity
+            android:name=".SignUpActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"/>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"/>
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".DashBoard" />
         <activity android:name=".MainActivity">
             <intent-filter>

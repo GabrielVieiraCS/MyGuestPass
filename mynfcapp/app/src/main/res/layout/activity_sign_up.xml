@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mynfcapp.SignUpActivity"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <ImageView
+        android:id="@+id/logo_image2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
+        android:transitionName="logo_image"
+        android:src="@drawable/logo_no_text"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account Creation"
+        android:textSize="40sp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000"
+        android:transitionName="logo_text"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up to get started!"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+        android:transitionName="logo_desc"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/regName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/regEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Address"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/regPhoneNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/regPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            app:passwordToggleEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Submit"
+        android:background="#b3ecff"
+        android:textColor="#000"
+        android:transitionName="button_tran"/>
+
+    <Button
+        android:id="@+id/account_already_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already have an account?"
+        android:background="#00000000"
+        android:transitionName="login_signup_tran"/>
+
+
+
+
+</LinearLayout>
