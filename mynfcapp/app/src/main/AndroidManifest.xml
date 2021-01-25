@@ -9,11 +9,27 @@
         android:required="true" />
 
     <application android:theme="@style/Theme.Mynfcapp.NoActionBar">
+        <activity android:name=".AccountCreation.ForgetPasswordSuccessMessage"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
+            ></activity>
         <activity
-            android:name=".SignUpActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"/>
+            android:name=".AccountCreation.SetNewPassword"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity android:name=".AccountCreation.MakeSelection" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".AccountCreation.ForgotPassword"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity
+            android:name=".AccountCreation.VerifyOTP"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity android:name=".AccountCreation.SignUp3rdClass" />
+        <activity android:name=".AccountCreation.SignUp2ndClass" />
+        <activity android:name=".AccountCreation.StartUpScreenActivity" />
+        <activity
+            android:name=".AccountCreation.SignUpActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity
+            android:name=".AccountCreation.LoginActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".DashBoard" />
         <activity android:name=".MainActivity">

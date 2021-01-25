@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.mynfcapp.AccountCreation.StartUpScreenActivity;
+
 public class MainActivity extends Activity {
 
     private static int SPLASH_SCREEN = 5000;
@@ -49,7 +51,7 @@ public class MainActivity extends Activity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, StartUpScreenActivity.class);
 
                 Pair[] pairs = new Pair[2];
                 pairs[0] = new Pair<View, String>(image, "logo_image");

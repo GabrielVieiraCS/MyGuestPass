@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountCreation.ForgotPassword"
+    android:background="@color/white"
+    android:padding="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/makeSelection_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_button_small"
+            android:padding="5dp"
+            android:onClick="callPrevScreen"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Make Selection"
+            android:textColor="@color/black"
+            android:textSize="55sp"
+            android:textAllCaps="true"
+            android:fontFamily="@font/muli_black"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How would you like to change your password?"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/muli_normal"
+            android:layout_marginTop="10dp" />
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="180dp"
+           android:layout_marginTop="50dp"
+           android:background="#e4e7ed"
+           android:padding="10dp">
+
+           <ImageView
+               android:id="@+id/mobile_icon"
+               android:layout_width="80dp"
+               android:layout_height="80dp"
+               android:src="@drawable/mobilephone_icon_small"
+               android:layout_centerVertical="true"
+               android:layout_marginRight="20dp"/>
+
+
+           <TextView
+               android:id="@+id/mobile_title"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="via SMS"
+               android:textSize="25sp"
+               android:textAllCaps="false"
+               android:fontFamily="@font/muli_normal"
+               android:layout_marginTop="35dp"
+               android:layout_toRightOf="@id/mobile_icon" />
+
+           <TextView
+               android:id="@+id/mobile_description"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="USER_NUMBER"
+               android:textSize="25sp"
+               android:textAllCaps="false"
+               android:fontFamily="@font/muli_normal"
+               android:layout_marginTop="35dp"
+               android:layout_toRightOf="@id/mobile_icon"
+               android:layout_below="@id/mobile_title"
+               android:textColor="@color/black"/>
+
+           <Button
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:background="#00000000"/>
+
+       </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp"
+            android:background="#e4e7ed"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/send_email_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/send_email_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"/>
+
+
+            <TextView
+                android:id="@+id/send_email_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="via Email"
+                android:textSize="25sp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/muli_normal"
+                android:layout_marginTop="35dp"
+                android:layout_toRightOf="@id/send_email_icon" />
+
+            <TextView
+                android:id="@+id/send_email_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="USER_EMAIL"
+                android:textSize="25sp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/muli_normal"
+                android:layout_marginTop="35dp"
+                android:layout_toRightOf="@id/send_email_icon"
+                android:layout_below="@id/send_email_title"
+                android:textColor="@color/black"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00000000"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>
