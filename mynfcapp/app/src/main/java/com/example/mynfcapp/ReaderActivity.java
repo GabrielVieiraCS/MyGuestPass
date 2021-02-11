@@ -12,16 +12,19 @@ import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.List;
 
+import com.example.mynfcapp.AccountCreation.Database.SessionManager;
 import com.example.mynfcapp.parser.NdefMessageParser;
 import com.example.mynfcapp.record.ParsedNdefRecord;
 
 //extends AppCompatActivity
-public class DashBoard extends Activity {
+public class ReaderActivity extends Activity {
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
@@ -30,7 +33,20 @@ public class DashBoard extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_reader);
+
+        //User Session Details
+        SessionManager sessionManager = new SessionManager(this, SessionManager.SESSION_USERSESSION);
+        HashMap<String, String> userDetails = sessionManager.getUserDetailFromSession();
+
+        String fullName = userDetails.get(SessionManager.KEY_FULLNAME);
+        String email = userDetails.get(SessionManager.KEY_EMAIL);
+        String phoneNo = userDetails.get(SessionManager.KEY_PHONENUMNER);
+        String password = userDetails.get(SessionManager.KEY_PASSWORD);
+        String date = userDetails.get(SessionManager.KEY_DATE);
+        String gender = userDetails.get(SessionManager.KEY_GENDER);
+
         text = (TextView) findViewById(R.id.text);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 

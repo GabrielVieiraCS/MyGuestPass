@@ -4,25 +4,27 @@ package com.example.mynfcapp.AccountCreation;
 
 public class UserHelperClass {
 
-    String name, email, phoneNo, password;
+    String fullName, email, phoneNo, password, date, gender;
 
     //Constructors
 
     public UserHelperClass() {
     }
 
-    public UserHelperClass(String name, String email, String phoneNo, String password) {
-        this.name = name;
+    public UserHelperClass(String fullName, String email, String phoneNo, String password, String date, String gender) {
+        this.fullName = fullName;
         this.email = email;
         this.phoneNo = phoneNo;
         this.password = password;
+        this.date = date;
+        this.gender = gender;
     }
 
 
     //Getters
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
     public String getEmail() {
@@ -37,11 +39,19 @@ public class UserHelperClass {
         return password;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
 
     //Setters
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String name) {
+        this.fullName = name;
     }
 
     public void setEmail(String email) {
@@ -55,4 +65,14 @@ public class UserHelperClass {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void setDate(String password) {
+        this.date = date;
+    }
+
+    public void setGender(String password) {
+        this.gender = gender;
+    }
+
+
 }

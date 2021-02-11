@@ -1,6 +1,5 @@
 package com.example.mynfcapp.AccountCreation;
 import com.chaos.view.PinView;
-import com.example.mynfcapp.DashBoard;
 import com.example.mynfcapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,16 +10,15 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -29,6 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 
 public class VerifyOTP extends Activity {
+
+    //Global Variables
+    String phoneNo, fullName, email, password, date, gender, whatToDO;
 
     PinView pinFromUser;
     String codeBySystem;
@@ -42,7 +43,14 @@ public class VerifyOTP extends Activity {
         //Hooks
         pinFromUser = findViewById(R.id.pin_view);
 
-        String phoneNo = getIntent().getStringExtra("phoneNo");
+        //All the data from Intent
+        phoneNo = getIntent().getStringExtra("phoneNo");
+        fullName = getIntent().getStringExtra("fullName");
+        email = getIntent().getStringExtra("email");
+        password = getIntent().getStringExtra("password");
+        gender = getIntent().getStringExtra("gender");
+        date = getIntent().getStringExtra("date");
+        whatToDO = getIntent().getStringExtra("whatToDO");
 
         sendVerificationCodeToUser(phoneNo);
     }
@@ -97,8 +105,12 @@ public class VerifyOTP extends Activity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(VerifyOTP.this, "Verification Complete.", Toast.LENGTH_SHORT).show();
 
+                            if (whatToDO.equals("updateData")) {
+                                updateOldUsersData();
+                            } else {
+                                storeNewUserData();
+                            }
                         } else {
 
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -107,6 +119,23 @@ public class VerifyOTP extends Activity {
                         }
                     }
                 });
+    }
+
+    private void updateOldUsersData() {
+        Intent intent = new Intent(getApplicationContext(), SetNewPassword.class);
+        intent.putExtra("phoneNo", phoneNo);
+        startActivity(intent);
+        finish();
+    }
+
+    //Method to store User Data in Database
+    private void storeNewUserData() {
+        FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
+        DatabaseReference reference = rootNode.getReference("Users");
+
+        UserHelperClass addNewUser = new UserHelperClass(fullName, email, phoneNo, password, date, gender);
+        reference.child(phoneNo).setValue(addNewUser);
+
     }
 
     public void callNextScreen(View view) {

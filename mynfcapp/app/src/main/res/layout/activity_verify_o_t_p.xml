@@ -80,7 +80,8 @@
             android:layout_marginTop="30dp"
             android:text="Verify Code"
             android:textColor="@color/black"
-            android:onClick="callNextScreen"/>
+            android:onClick="callNextScreen"
+            />
 
     </LinearLayout>
 

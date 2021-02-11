@@ -8,10 +8,14 @@
         android:name="android.hardware.nfc"
         android:required="true" />
 
-    <application android:theme="@style/Theme.Mynfcapp.NoActionBar">
-        <activity android:name=".AccountCreation.ForgetPasswordSuccessMessage"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
-            ></activity>
+    <application android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <activity android:name=".Test"></activity>
+        <activity
+            android:name=".Dashboard.Dashboard"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity
+            android:name=".AccountCreation.ForgetPasswordSuccessMessage"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity
             android:name=".AccountCreation.SetNewPassword"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
@@ -31,7 +35,9 @@
         <activity
             android:name=".AccountCreation.LoginActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
-        <activity android:name=".DashBoard" />
+        <activity
+            android:name=".ReaderActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

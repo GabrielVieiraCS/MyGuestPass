@@ -32,39 +32,55 @@
             android:textColor="@color/black"
             android:textSize="40sp"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:orientation="vertical">
+            android:layout_marginTop="80dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/login_country_code_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Email Address"
-                app:boxStrokeColor="@color/black"
-                app:boxStrokeWidthFocused="2dp"
-                app:hintTextColor="@color/black"
-                app:startIconDrawable="@drawable/username_icon_small"
+                android:background="@drawable/black_border"
+                app:ccpDialog_textColor="@color/black"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_showFlag="true"
+                app:ccp_showFullName="true"
+                app:ccp_showNameCode="true"
+                android:padding="7dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_phoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_country_code_picker"
+                android:hint="Phone Number"
+                app:startIconDrawable="@drawable/phone_icon_small"
                 app:startIconTint="@color/black"
+                app:hintTextColor="@color/black"
+                android:textColorHint="@color/black"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:endIconMode="clear_text"
-                app:endIconTint="@color/black">
+                app:endIconTint="@color/black"
+                app:boxStrokeWidthFocused="2dp"
+                app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_phoneNo_editText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/muli_normal"
-                    android:textColor="@color/black"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="phone"/>
+
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_password"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/login_phoneNo"
                 android:hint="Enter Password"
                 app:boxStrokeColor="@color/black"
                 app:boxStrokeWidthFocused="2dp"
@@ -75,6 +91,7 @@
                 app:endIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_password_editText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/muli_normal"
@@ -85,11 +102,14 @@
 
 
             <RelativeLayout
+                android:id="@+id/forget_password_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/login_password"
                 android:layout_marginTop="10dp">
 
                 <CheckBox
+                    android:id="@+id/remember_me"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.CompoundButton.CheckBox"
@@ -114,21 +134,43 @@
                 android:id="@+id/loginScreen_login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="LOGIN"
+                android:layout_below="@+id/forget_password_block"
+                android:layout_marginTop="20dp"
                 android:background="@color/black"
-                android:textColor="@color/white"
-                android:layout_marginTop="20dp" />
+                android:onClick="userLogin"
+                android:text="LOGIN"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/signup_screen_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/loginScreen_login_btn"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:text="Create\naccount"
                 android:background="#00000000"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:onClick="callRegisterScreen"/>
 
-        </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/login_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="20dp"
+                android:background="@drawable/whitecircle"
+                android:elevation="8dp"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
 
     </LinearLayout>
