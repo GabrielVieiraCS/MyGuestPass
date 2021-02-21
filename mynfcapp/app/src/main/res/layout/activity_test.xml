@@ -13,12 +13,179 @@
         android:textOn="Read"
         android:textOff="Write"
         android:checked="true"
+        android:onClick="tglReadWriteOnClick"
+        android:backgroundTint="#deb40b"/>
+
+    <ToggleButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/tglLockTag"
+        android:textOn="Do not lock tag"
+        android:textOff="Lock Tag"
+        android:checked="false"
+        android:layout_below="@+id/tglReadWrite"
         android:onClick="tglReadWriteOnClick"/>
 
-    <EditText
+    <TextView
+        android:gravity="center"
+        android:paddingTop="550dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/txtTagContent"
         android:layout_below="@+id/tglReadWrite"/>
+
+    <LinearLayout
+        android:paddingTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter the User's number:"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/book_country_code_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_border"
+            app:ccpDialog_textColor="@color/black"
+            app:ccp_autoDetectCountry="true"
+            app:ccp_showFlag="true"
+            app:ccp_showFullName="true"
+            app:ccp_showNameCode="true"
+            android:padding="7dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_phoneNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            app:startIconDrawable="@drawable/phone_icon_small"
+            app:startIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            android:textColorHint="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxStrokeColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/book_phoneNo_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="phone"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_fullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            app:startIconDrawable="@drawable/username_icon_small"
+            app:startIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            android:textColorHint="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxStrokeColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/book_fullname_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_location"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/book_phoneNo"
+            android:hint="Enter Location"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/location_icon_small"
+            app:startIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/book_location_editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/muli_normal"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="25dp"
+            android:layout_gravity="center"
+            android:text="Book the Date and Time:"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+
+        <Button
+            android:id="@+id/dateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Date"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#deb40b"/>
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="64dp"
+            android:text=""
+            android:layout_gravity="center"/>
+
+
+        <Button
+            android:id="@+id/timeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Time"
+            android:layout_gravity="center"
+            android:backgroundTint="#deb40b"/>
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="64dp"
+            android:text=""
+            android:layout_gravity="center"/>
+
+
+
+
+
+
+    </LinearLayout>
 
 </RelativeLayout>

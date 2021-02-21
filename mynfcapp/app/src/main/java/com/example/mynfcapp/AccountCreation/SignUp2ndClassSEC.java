@@ -21,7 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 
-public class SignUp2ndClass extends AppCompatActivity {
+public class SignUp2ndClassSEC extends AppCompatActivity {
 
     //Variables
     ImageView backBtn;
@@ -66,7 +66,7 @@ public class SignUp2ndClass extends AppCompatActivity {
         String _password = getIntent().getStringExtra("password");
 
 
-        Intent intent = new Intent(getApplicationContext(), SignUp3rdClass.class);
+        Intent intent = new Intent(getApplicationContext(), SignUp3rdClassSEC.class);
 
         //Store & Pass Variables
         intent.putExtra("fullName", _fullName);
@@ -86,7 +86,7 @@ public class SignUp2ndClass extends AppCompatActivity {
 
         ActivityOptions options = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptions.makeSceneTransitionAnimation(SignUp2ndClass.this, pairs);
+            options = ActivityOptions.makeSceneTransitionAnimation(SignUp2ndClassSEC.this, pairs);
             startActivity(intent, options.toBundle());
         } else {
             startActivity(intent);
@@ -96,7 +96,7 @@ public class SignUp2ndClass extends AppCompatActivity {
     }
 
     public void callPrevSignupScreen(View view) {
-        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SignUpActivitySEC.class);
 
         //Add Transition
         Pair[] pairs = new Pair[4];
@@ -108,7 +108,7 @@ public class SignUp2ndClass extends AppCompatActivity {
 
         ActivityOptions options = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptions.makeSceneTransitionAnimation(SignUp2ndClass.this, pairs);
+            options = ActivityOptions.makeSceneTransitionAnimation(SignUp2ndClassSEC.this, pairs);
             startActivity(intent, options.toBundle());
         } else {
             startActivity(intent);

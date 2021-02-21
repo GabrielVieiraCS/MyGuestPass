@@ -20,7 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SignUpActivity extends Activity {
+public class SignUpActivitySEC extends Activity {
 
     //Variables
     ImageView backBtn;
@@ -62,7 +62,7 @@ public class SignUpActivity extends Activity {
         if (!validateFullName() | !validateEmail() | validatePassword()) {
             return;
         }
-        Intent intent = new Intent(getApplicationContext(), SignUp2ndClass.class);
+        Intent intent = new Intent(getApplicationContext(), SignUp2ndClassSEC.class);
 
         //Store & Pass User Details
         String fullName = reg_fullName.getEditText().getText().toString();
@@ -84,7 +84,7 @@ public class SignUpActivity extends Activity {
 
         ActivityOptions options = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptions.makeSceneTransitionAnimation(SignUpActivity.this, pairs);
+            options = ActivityOptions.makeSceneTransitionAnimation(SignUpActivitySEC.this, pairs);
             startActivity(intent, options.toBundle());
         } else {
             startActivity(intent);
@@ -105,7 +105,7 @@ public class SignUpActivity extends Activity {
 
         ActivityOptions options = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptions.makeSceneTransitionAnimation(SignUpActivity.this, pairs);
+            options = ActivityOptions.makeSceneTransitionAnimation(SignUpActivitySEC.this, pairs);
             startActivity(intent, options.toBundle());
         } else {
             startActivity(intent);

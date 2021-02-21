@@ -27,6 +27,7 @@ import com.example.mynfcapp.AccountCreation.Database.SessionManager;
 import com.example.mynfcapp.Dashboard.Dashboard;
 import com.example.mynfcapp.ReaderActivity;
 import com.example.mynfcapp.R;
+import com.example.mynfcapp.Test;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -135,6 +136,63 @@ public class LoginActivity extends Activity {
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists() == false) {
+                    Query checkUser = FirebaseDatabase.getInstance().getReference("Security").orderByChild("phoneNo").equalTo(_completePhoneNumber);
+
+                    checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                phoneNumber.setError(null);
+                                phoneNumber.setErrorEnabled(false);
+
+                                //Get Password From User Snapshot
+                                String systemPassword = snapshot.child(_completePhoneNumber).child("password").getValue(String.class);
+                                if (systemPassword.equals(_password)) {
+                                    password.setError(null);
+                                    phoneNumber.setErrorEnabled(false);
+
+                                    String _fullName = snapshot.child(_completePhoneNumber).child("fullName").getValue(String.class);
+                                    String _email = snapshot.child(_completePhoneNumber).child("email").getValue(String.class);
+                                    String _phoneNo = snapshot.child(_completePhoneNumber).child("phoneNo").getValue(String.class);
+                                    String _password = snapshot.child(_completePhoneNumber).child("password").getValue(String.class);
+                                    String _date = snapshot.child(_completePhoneNumber).child("date").getValue(String.class);
+                                    String _gender = snapshot.child(_completePhoneNumber).child("gender").getValue(String.class);
+
+
+                                    //CREATE A SESSION
+                                    SessionManager sessionManager = new SessionManager(LoginActivity.this, SessionManager.SESSION_USERSESSION);
+                                    sessionManager.createLoginSession(_fullName, _email, _phoneNo, _password, _date, _gender);
+
+
+                                    Toast.makeText(LoginActivity.this, _fullName + "\n" + _email + "\n" + _phoneNo + "\n" + _date, Toast.LENGTH_SHORT).show();
+                                    //progressbar.setVisibility(View.GONE);
+                                    // ADD NEXT ACTIVITY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                    Intent intent = new Intent(getApplicationContext(), Test.class);
+                                    startActivity(intent);
+                                } else {
+                                    progressbar.setVisibility(View.GONE);
+                                    Toast.makeText(LoginActivity.this, "Password does not match!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                progressbar.setVisibility(View.GONE);
+                                Toast.makeText(LoginActivity.this, "Wrong Data!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            progressbar.setVisibility(View.GONE);
+                            Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
                 if (snapshot.exists()) {
                     phoneNumber.setError(null);
                     phoneNumber.setErrorEnabled(false);
@@ -174,12 +232,16 @@ public class LoginActivity extends Activity {
 
             }
 
+
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressbar.setVisibility(View.GONE);
                 Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
 

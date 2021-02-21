@@ -16,7 +16,7 @@ import com.example.mynfcapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hbb20.CountryCodePicker;
 
-public class SignUp3rdClass extends Activity {
+public class SignUp3rdClassSEC extends Activity {
 
     //Variables
     ImageView backBtn;
@@ -55,7 +55,7 @@ public class SignUp3rdClass extends Activity {
         String _getUserEnteredPhoneNumber = reg_phoneNo.getEditText().getText().toString().trim(); //Gets User Phone Number
         String __phoneNo = "+"+countryCodePicker.getFullNumber()+_getUserEnteredPhoneNumber;
 
-        Intent intent = new Intent(getApplicationContext(), VerifyOTP.class);
+        Intent intent = new Intent(getApplicationContext(), VerifyOTPSEC.class);
 
         intent.putExtra("fullName", __fullName);
         intent.putExtra("email", __email);
@@ -75,7 +75,7 @@ public class SignUp3rdClass extends Activity {
 
         ActivityOptions options = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptions.makeSceneTransitionAnimation(SignUp3rdClass.this, pairs);
+            options = ActivityOptions.makeSceneTransitionAnimation(SignUp3rdClassSEC.this, pairs);
             startActivity(intent, options.toBundle());
         } else {
             startActivity(intent);
@@ -85,7 +85,7 @@ public class SignUp3rdClass extends Activity {
     }
 
     public void callPrevSignupScreen(View view) {
-        Intent intent = new Intent(getApplicationContext(), SignUp2ndClass.class);
+        Intent intent = new Intent(getApplicationContext(), SignUp2ndClassSEC.class);
 
         //Add Transition
         Pair[] pairs = new Pair[4];
@@ -97,7 +97,7 @@ public class SignUp3rdClass extends Activity {
 
         ActivityOptions options = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptions.makeSceneTransitionAnimation(SignUp3rdClass.this, pairs);
+            options = ActivityOptions.makeSceneTransitionAnimation(SignUp3rdClassSEC.this, pairs);
             startActivity(intent, options.toBundle());
         } else {
             startActivity(intent);

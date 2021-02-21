@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mynfcapp">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.NFC" />
 
     <uses-feature
@@ -9,7 +10,11 @@
         android:required="true" />
 
     <application android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <activity android:name=".Test"></activity>
+        <activity android:name=".AccountCreation.VerifyOTPSEC"></activity>
+        <activity android:name=".AccountCreation.SignUp3rdClassSEC" />
+        <activity android:name=".AccountCreation.SignUp2ndClassSEC" />
+        <activity android:name=".AccountCreation.SignUpActivitySEC" />
+        <activity android:name=".Test" />
         <activity
             android:name=".Dashboard.Dashboard"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />

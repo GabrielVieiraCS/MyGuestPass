@@ -34,4 +34,10 @@ public class StartUpScreenActivity extends Activity {
         Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
         startActivity(intent);
     }
+
+    //Register Admin/Security
+    public void callRegisterScreenSEC(View view) {
+        Intent intent = new Intent(getApplicationContext(), SignUpActivitySEC.class);
+        startActivity(intent);
+    }
 }

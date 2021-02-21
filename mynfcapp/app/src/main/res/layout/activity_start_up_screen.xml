@@ -67,6 +67,18 @@
                 android:textColor="@color/black"
                 android:onClick="callRegisterScreen"/>
 
+            <Button
+                android:id="@+id/callSecRegisterBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="#deb40b"
+                android:text="Security"
+                android:textColor="@color/black"
+                android:onClick="callRegisterScreenSEC"
+                />
+
 
 
         </LinearLayout>

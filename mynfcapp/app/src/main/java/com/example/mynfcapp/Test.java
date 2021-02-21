@@ -3,7 +3,9 @@ package com.example.mynfcapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,25 +17,50 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.mynfcapp.AccountCreation.NFCHelperClass;
+import com.example.mynfcapp.AccountCreation.UserHelperClass;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.hbb20.CountryCodePicker;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import static android.nfc.NfcAdapter.getDefaultAdapter;
 
 public class Test extends Activity {
 
     NfcAdapter nfcAdapter;
-    EditText txtTagContent;
-    ToggleButton tglReadWrite;
+    TextView txtTagContent;
+    ToggleButton tglReadWrite, tglLockTag;
+    TextInputLayout phoneNo, name, location;
+    CountryCodePicker countryCodePicker;
+
+    Button dateButton, timeButton;
+    TextView dateTextView, timeTextView;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +68,20 @@ public class Test extends Activity {
         setContentView(R.layout.activity_test);
 
         nfcAdapter = getDefaultAdapter(this);
-        txtTagContent = (EditText) findViewById(R.id.txtTagContent);
+        txtTagContent = (TextView) findViewById(R.id.txtTagContent);
         tglReadWrite = (ToggleButton) findViewById(R.id.tglReadWrite);
+        tglLockTag = (ToggleButton) findViewById(R.id.tglLockTag);
+
+        //SEC Input
+        phoneNo = findViewById(R.id.book_phoneNo);
+        name = findViewById(R.id.book_fullname);
+        location = findViewById(R.id.book_location);
+        countryCodePicker = findViewById(R.id.book_country_code_picker);
+
+        dateButton = findViewById(R.id.dateButton);
+        timeButton = findViewById(R.id.timeButton);
+        dateTextView = findViewById(R.id.dateTextView);
+        timeTextView = findViewById(R.id.timeTextView);
 
 
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
@@ -50,7 +89,68 @@ public class Test extends Activity {
         } else {
             Toast.makeText(this, "NFC NOT AVAILABLE", Toast.LENGTH_LONG).show();
         }
+
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDateButton();
+            }
+        });
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleTimeButton();
+            }
+        });
     }
+
+    private void handleTimeButton() {
+        Calendar calendar = Calendar.getInstance();
+        int HOUR = calendar.get(Calendar.HOUR_OF_DAY);
+        int MINUTE = calendar.get(Calendar.MINUTE);
+
+        boolean is24HourFormat = DateFormat.is24HourFormat(this);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.HOUR_OF_DAY, hour);
+                calendar1.set(Calendar.MINUTE, minute);
+
+                CharSequence charSequence = DateFormat.format("HH:mm aa", calendar1);
+                timeTextView.setText(charSequence);
+            }
+        }, HOUR, MINUTE, is24HourFormat);
+
+        timePickerDialog.show();
+    }
+
+    private void handleDateButton() {
+        Calendar calendar = Calendar.getInstance();
+        int YEAR = calendar.get(Calendar.YEAR);
+        int MONTH = calendar.get(Calendar.MONTH);
+        int DATE =  calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int date) {
+
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.YEAR, year);
+                calendar1.set(Calendar.MONTH, month);
+                calendar1.set(Calendar.DATE, date);
+
+                CharSequence dateCharSequence = DateFormat.format("MMM d, yyyy", calendar1);
+                dateTextView.setText(dateCharSequence);
+            }
+        }, YEAR, MONTH, DATE);
+
+        datePickerDialog.show();
+    }
+
+
+
 
     @Override
     protected void onResume() {
@@ -82,10 +182,43 @@ public class Test extends Activity {
                     Toast.makeText(this, "No NDEF Message", Toast.LENGTH_SHORT).show();
                 }
             } else {
+                if (!validatePhoneNumber()) return;
+                if (dateTextView.getText() == null || timeTextView == null) return;
+
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                NdefMessage ndefMessage = createNdefMessage(txtTagContent.getText()+"");
+
+                //PUT INFO ON THE TAG
+                String _phoneNumber = phoneNo.getEditText().getText().toString().trim();
+                String _fullName = name.getEditText().getText().toString().trim();
+                String _location = location.getEditText().getText().toString().trim();
+                String _date = dateTextView.getText().toString().trim();
+                String _time = timeTextView.getText().toString().trim();
+
+                //Use Case handle of user input 0
+                if (_phoneNumber.charAt(0) == '0') {
+                    _phoneNumber = _phoneNumber.substring(1);
+                }
+                String _completePhoneNumber = "+" + countryCodePicker.getFullNumber() + _phoneNumber;
+                String fullContent = ("Full Name: " + _fullName + "\nPhone Number: " + _completePhoneNumber +  "\nLocation : " + _location + "\nDate: " + _date + "\nTime : " + _time);
+                String uniqueID = UUID.randomUUID().toString();
+                //NdefMessage ndefMessage = createNdefMessage(txtTagContent.getText()+"");
+                NdefMessage ndefMessage = createNdefMessage(fullContent);
+                FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
+                DatabaseReference reference = rootNode.getReference("Tags");
+
+                NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _time);
+                reference.child(uniqueID).setValue(addNewTag);
 
                 writeNdefMessage(tag, ndefMessage);
+
+                if (tglLockTag.isChecked()) {
+                    makeTagReadOnly(tag);
+                    rootNode = FirebaseDatabase.getInstance();
+                    reference = rootNode.getReference("Tags");
+
+                    addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _time);
+                    reference.child(uniqueID).setValue(addNewTag);
+                }
             }
 
         }
@@ -175,6 +308,13 @@ public class Test extends Activity {
 
     public void tglReadWriteOnClick(View view) {
         txtTagContent.setText("");
+        tglLockTag.setChecked(false);
+
+        if (!tglReadWrite.isChecked()) {
+            tglLockTag.setVisibility(View.VISIBLE);
+        } else {
+            tglLockTag.setVisibility(View.GONE);
+        }
     }
 
     public String getTextFromNdefRecord(NdefRecord ndefRecord) {
@@ -219,6 +359,52 @@ public class Test extends Activity {
 
     private void disableForegroundDispatchSystem() {
         nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    public void makeTagReadOnly(Tag tag) {
+        if (tag == null) {
+            return;
+        }
+        try {
+
+            Ndef ndef = Ndef.get(tag);
+
+            if (ndef != null) {
+                ndef.connect();
+
+                if (ndef.canMakeReadOnly()) {
+
+                    ndef.makeReadOnly();
+                }
+
+                ndef.close();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();;
+        }
+
+    }
+
+
+    /**
+     * Validation Method
+     */
+    private boolean validatePhoneNumber() {
+        String val = phoneNo.getEditText().getText().toString().trim();
+        //String checkspaces = "Aw{1,20}z";
+        String checkspaces = "^[^\\s].+[^\\s]$";
+        if (val.isEmpty()) {
+            phoneNo.setError("Enter valid phone number");
+            return false;
+        } else if (!val.matches(checkspaces)) {
+            phoneNo.setError("No White spaces are allowed! " + val );
+            return false;
+        } else {
+            phoneNo.setError(null);
+            phoneNo.setErrorEnabled(false);
+            return true;
+        }
     }
 
 }

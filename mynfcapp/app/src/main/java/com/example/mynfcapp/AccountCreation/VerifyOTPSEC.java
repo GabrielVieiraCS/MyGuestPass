@@ -26,7 +26,7 @@ import android.widget.Toast;
 import java.util.concurrent.TimeUnit;
 
 
-public class VerifyOTP extends Activity {
+public class VerifyOTPSEC extends Activity {
 
     //Global Variables
     String phoneNo, fullName, email, password, date, gender, whatToDO;
@@ -87,7 +87,7 @@ public class VerifyOTP extends Activity {
 
                 @Override
                 public void onVerificationFailed(@NonNull FirebaseException e) {
-                    Toast.makeText(VerifyOTP.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyOTPSEC.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             };
 
@@ -101,18 +101,25 @@ public class VerifyOTP extends Activity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        if (whatToDO != null) {
-                            updateOldUsersData();
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            if (whatToDO != null) {
+                                updateOldUsersData();
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                            } else {
+                                storeNewUserData();
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                            }
                         } else {
-                            storeNewUserData();
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    } else {
-                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            Toast.makeText(VerifyOTP.this, "Verification Not Completed! Please Try Again.", Toast.LENGTH_SHORT).show();
+
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                Toast.makeText(VerifyOTPSEC.this, "Verification Not Completed! Please Try Again.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
@@ -128,7 +135,7 @@ public class VerifyOTP extends Activity {
     //Method to store User Data in Database
     private void storeNewUserData() {
         FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
-        DatabaseReference reference = rootNode.getReference("Users");
+        DatabaseReference reference = rootNode.getReference("Security");
 
         UserHelperClass addNewUser = new UserHelperClass(fullName, email, phoneNo, password, date, gender);
         reference.child(phoneNo).setValue(addNewUser);
@@ -149,7 +156,7 @@ public class VerifyOTP extends Activity {
 
         ActivityOptions options = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptions.makeSceneTransitionAnimation(VerifyOTP.this);
+            options = ActivityOptions.makeSceneTransitionAnimation(VerifyOTPSEC.this);
             startActivity(intent, options.toBundle());
         } else {
             startActivity(intent);
