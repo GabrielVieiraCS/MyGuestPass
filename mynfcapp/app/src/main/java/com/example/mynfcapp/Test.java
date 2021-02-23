@@ -182,7 +182,7 @@ public class Test extends Activity {
                     Toast.makeText(this, "No NDEF Message", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                if (!validatePhoneNumber()) return;
+                if (!validatePhoneNumber() | !validateFullName() | !validateLocation()) return;
                 if (dateTextView.getText() == null || timeTextView == null) return;
 
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
@@ -199,8 +199,10 @@ public class Test extends Activity {
                     _phoneNumber = _phoneNumber.substring(1);
                 }
                 String _completePhoneNumber = "+" + countryCodePicker.getFullNumber() + _phoneNumber;
-                String fullContent = ("Full Name: " + _fullName + "\nPhone Number: " + _completePhoneNumber +  "\nLocation : " + _location + "\nDate: " + _date + "\nTime : " + _time);
                 String uniqueID = UUID.randomUUID().toString();
+
+                String fullContent = ("Your Tag ID: " + uniqueID + "Full Name: " + _fullName + "\nPhone Number: " + _completePhoneNumber +  "\nLocation : " + _location + "\nDate: " + _date + "\nTime : " + _time);
+
                 //NdefMessage ndefMessage = createNdefMessage(txtTagContent.getText()+"");
                 NdefMessage ndefMessage = createNdefMessage(fullContent);
                 FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
@@ -403,6 +405,32 @@ public class Test extends Activity {
         } else {
             phoneNo.setError(null);
             phoneNo.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateFullName() {
+        String val = name.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            name.setError("Field cannot be empty!");
+            return false;
+        } else {
+            name.setError(null);
+            name.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateLocation() {
+        String val = location.getEditText().getText().toString().trim();
+
+        if (val.isEmpty()) {
+            location.setError("Field cannot be empty!");
+            return false;
+        } else {
+            location.setError(null);
+            location.setErrorEnabled(false);
             return true;
         }
     }

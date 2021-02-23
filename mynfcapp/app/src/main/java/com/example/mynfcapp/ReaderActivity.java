@@ -22,6 +22,10 @@ import java.util.List;
 import com.example.mynfcapp.AccountCreation.Database.SessionManager;
 import com.example.mynfcapp.parser.NdefMessageParser;
 import com.example.mynfcapp.record.ParsedNdefRecord;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 //extends AppCompatActivity
 public class ReaderActivity extends Activity {
@@ -29,6 +33,8 @@ public class ReaderActivity extends Activity {
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private TextView text;
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,9 @@ public class ReaderActivity extends Activity {
         String password = userDetails.get(SessionManager.KEY_PASSWORD);
         String date = userDetails.get(SessionManager.KEY_DATE);
         String gender = userDetails.get(SessionManager.KEY_GENDER);
+
+        //DATABASE
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         text = (TextView) findViewById(R.id.text);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -133,7 +142,21 @@ public class ReaderActivity extends Activity {
             builder.append(str).append("\n");
         }
 
-        text.setText(builder.toString());
+        String tagContent = builder.toString();
+
+        //VERIFY USER TO READ MESSAGE
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        if (user != null) {
+            String userNumber = user.getPhoneNumber().trim();
+            String numberOnTag = tagContent.substring(tagContent.indexOf("+"), tagContent.indexOf("Location")).trim();
+            System.out.println(userNumber);
+            System.out.println(numberOnTag);
+            if (numberOnTag.equals(userNumber)) {
+                text.setText(builder.toString());
+            } else text.setText("This is not your Tag :(");
+        } else finish();
+
     }
 
 

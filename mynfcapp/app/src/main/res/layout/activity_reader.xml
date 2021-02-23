@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:text="Hold a tag against the back of your device"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="50dp"

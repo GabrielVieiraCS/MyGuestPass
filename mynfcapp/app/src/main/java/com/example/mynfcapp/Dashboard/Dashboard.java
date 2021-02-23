@@ -13,6 +13,7 @@ import com.example.mynfcapp.AccountCreation.LoginActivity;
 import com.example.mynfcapp.R;
 import com.example.mynfcapp.ReaderActivity;
 import com.example.mynfcapp.Test;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.HashMap;
@@ -71,6 +72,7 @@ public class Dashboard extends AppCompatActivity {
         startActivity(intent);
     }
     public void logoutUser(View view) {
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
