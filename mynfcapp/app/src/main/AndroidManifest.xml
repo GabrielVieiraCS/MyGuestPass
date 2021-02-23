@@ -10,11 +10,12 @@
         android:required="true" />
 
     <application android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <activity android:name=".AccountCreation.VerifyOTPSEC"></activity>
+        <activity android:name=".Dashboard.DashboardSEC"></activity>
+        <activity android:name=".AccountCreation.VerifyOTPSEC" />
         <activity android:name=".AccountCreation.SignUp3rdClassSEC" />
         <activity android:name=".AccountCreation.SignUp2ndClassSEC" />
         <activity android:name=".AccountCreation.SignUpActivitySEC" />
-        <activity android:name=".Test" />
+        <activity android:name=".PassCreation" />
         <activity
             android:name=".Dashboard.Dashboard"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />

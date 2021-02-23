@@ -25,9 +25,9 @@ import android.widget.Toast;
 
 import com.example.mynfcapp.AccountCreation.Database.SessionManager;
 import com.example.mynfcapp.Dashboard.Dashboard;
-import com.example.mynfcapp.ReaderActivity;
+import com.example.mynfcapp.Dashboard.DashboardSEC;
 import com.example.mynfcapp.R;
-import com.example.mynfcapp.Test;
+import com.example.mynfcapp.PassCreation;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -169,7 +169,7 @@ public class LoginActivity extends Activity {
                                     Toast.makeText(LoginActivity.this, _fullName + "\n" + _email + "\n" + _phoneNo + "\n" + _date, Toast.LENGTH_SHORT).show();
                                     //progressbar.setVisibility(View.GONE);
                                     // ADD NEXT ACTIVITY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                    Intent intent = new Intent(getApplicationContext(), Test.class);
+                                    Intent intent = new Intent(getApplicationContext(), DashboardSEC.class);
                                     startActivity(intent);
                                 } else {
                                     progressbar.setVisibility(View.GONE);

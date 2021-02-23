@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard.DashboardFragment"
+    tools:context=".Dashboard.DashboardFragmentSEC"
     android:background="#00BCD4">
 
 
@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MyGuestPASS"
+            android:text="MyGuestPASS SEC."
             android:textColor="@color/black"
             android:textSize="45sp"
             android:textAllCaps="true"
@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Manage your passes"
+            android:text="View and Create Passes"
             android:textSize="18sp"
             android:textAllCaps="false"
             android:fontFamily="@font/muli_normal"
@@ -69,7 +69,7 @@
                 android:layout_toRightOf="@id/nfc_icon" />
 
             <TextView
-                android:id="@+id/mobile_description"
+                android:id="@+id/mobile_description_SEC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SCANNER"
@@ -90,7 +90,53 @@
         </RelativeLayout>
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp"
+            android:background="#e4e7ed"
+            android:padding="10dp">
 
+            <ImageView
+                android:id="@+id/ticket_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ticket_icon_small"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"/>
+
+
+            <TextView
+                android:id="@+id/manage_tickets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create with NFC"
+                android:textSize="25sp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/muli_normal"
+                android:layout_marginTop="35dp"
+                android:layout_toRightOf="@id/ticket_icon" />
+
+            <TextView
+                android:id="@+id/check_passes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CREATE A PASS"
+                android:textSize="25sp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/muli_normal"
+                android:layout_marginTop="35dp"
+                android:layout_toRightOf="@id/ticket_icon"
+                android:layout_below="@id/manage_tickets"
+                android:textColor="@color/black"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:onClick="createPass"/>
+
+        </RelativeLayout>
 
 
     </LinearLayout>

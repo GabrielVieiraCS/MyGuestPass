@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mynfcapp.ReaderActivity"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:id="@+id/reader_bg">
 
     <ImageView
         android:id="@+id/logo"

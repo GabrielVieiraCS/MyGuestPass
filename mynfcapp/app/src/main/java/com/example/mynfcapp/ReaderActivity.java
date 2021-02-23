@@ -1,31 +1,52 @@
 package com.example.mynfcapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Color;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
+import java.io.Reader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import com.example.mynfcapp.AccountCreation.Database.SessionManager;
+import com.example.mynfcapp.AccountCreation.LoginActivity;
 import com.example.mynfcapp.parser.NdefMessageParser;
 import com.example.mynfcapp.record.ParsedNdefRecord;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 //extends AppCompatActivity
 public class ReaderActivity extends Activity {
@@ -35,6 +56,8 @@ public class ReaderActivity extends Activity {
     private TextView text;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference reference;
+    private boolean isSec;
+    private RelativeLayout rl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +76,12 @@ public class ReaderActivity extends Activity {
         String date = userDetails.get(SessionManager.KEY_DATE);
         String gender = userDetails.get(SessionManager.KEY_GENDER);
 
+        //DESIGN
+        rl = findViewById(R.id.reader_bg);
+
         //DATABASE
         mFirebaseAuth = FirebaseAuth.getInstance();
+        isSec = false;
 
         text = (TextView) findViewById(R.id.text);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -64,6 +91,38 @@ public class ReaderActivity extends Activity {
             finish();
             return;
         }
+
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        String _userNumber =  user.getPhoneNumber().trim();
+
+        //Database Validation
+        Query checkUser = FirebaseDatabase.getInstance().getReference("Security").orderByChild("phoneNo").equalTo(_userNumber);
+
+        checkUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String systemPhoneNo = snapshot.child(_userNumber).child("phoneNo").getValue(String.class);
+                    System.out.println("Number in System is" + systemPhoneNo);
+                    if (systemPhoneNo.equals(_userNumber)) {
+                        isSec = true;
+                    } else isSec = false;
+
+                } else {
+                    isSec = false;
+                }
+                System.out.println("isSec is : " + isSec);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+                System.out.println("The read failed: " + error.getCode());
+            }
+        });
+
+
+
 
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
     }
@@ -89,12 +148,14 @@ public class ReaderActivity extends Activity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         resolveIntent(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void resolveIntent(Intent intent) {
         String action = intent.getAction();
 
@@ -128,6 +189,7 @@ public class ReaderActivity extends Activity {
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void displayMsgs(NdefMessage[] msgs) {
         if (msgs == null || msgs.length == 0)
             return;
@@ -142,21 +204,87 @@ public class ReaderActivity extends Activity {
             builder.append(str).append("\n");
         }
 
+
+        //Check Date & Time
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
+        Date currDate = new Date();
+        System.out.println("Date is: " + formatter.format(currDate)); // CURRENTDATE
+
+        Date currTime = new Date();
+        DateFormat format = new SimpleDateFormat("HH:mm a");
+        System.out.println(format.format(currTime)); //CURRENT TIME
+
+
+        //Tag Content
         String tagContent = builder.toString();
+        String tagID = tagContent.substring(13).trim();
 
         //VERIFY USER TO READ MESSAGE
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         if (user != null) {
             String userNumber = user.getPhoneNumber().trim();
-            String numberOnTag = tagContent.substring(tagContent.indexOf("+"), tagContent.indexOf("Location")).trim();
-            System.out.println(userNumber);
-            System.out.println(numberOnTag);
-            if (numberOnTag.equals(userNumber)) {
+            //String numberOnTag = tagContent.substring(tagContent.indexOf("+"), tagContent.indexOf("Location")).trim();
+
+
+            //Database Validation
+            Query checkTag = FirebaseDatabase.getInstance().getReference("Tags").orderByChild("id").equalTo(tagID);
+
+            checkTag.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String dateOnTag = snapshot.child(tagID).child("date").getValue(String.class);
+                        String nameOnTag = snapshot.child(tagID).child("fullName").getValue(String.class);
+                        String locationOnTag = snapshot.child(tagID).child("location").getValue(String.class);
+                        String numOnTag = snapshot.child(tagID).child("phoneNo").getValue(String.class);
+                        String timeOnTag = snapshot.child(tagID).child("time").getValue(String.class);
+
+                        String finalMessage = ("Tag ID: " + tagID + "\n\nName: " + nameOnTag + "\nPhone Number: " + numOnTag + "\n\nDate: " + dateOnTag + "\nLocation: " + locationOnTag + "\nTime: " + timeOnTag);
+
+                        //Format Tag Date
+
+
+
+                        if (userNumber.equals(numOnTag) || isSec == true) {
+                            text.setText(finalMessage);
+
+                            DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+                            try {
+                                Date eventDate = format.parse(dateOnTag);
+                                if (currDate.before(eventDate)) {
+                                    rl.setBackgroundColor(Color.RED);
+                                } else {
+                                    rl.setBackgroundColor(Color.GREEN);
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else text.setText("Not your tag!");
+                    }
+                    if (snapshot.exists() == false) {
+                        text.setText("This tag does not exist!");
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    System.out.println("The read failed: " + error.getCode());
+                }
+            });
+
+
+
+            /*System.out.println(userNumber);
+            //System.out.println(numberOnTag);
+            if (numberOnTag.equals(userNumber) || isSec == true) {
                 text.setText(builder.toString());
             } else text.setText("This is not your Tag :(");
-        } else finish();
+        } else Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();;*/
 
+        }
     }
 
 

@@ -11,19 +11,20 @@ import com.example.mynfcapp.AccountCreation.Database.SessionManager;
 import com.example.mynfcapp.AccountCreation.LoginActivity;
 import com.example.mynfcapp.R;
 import com.example.mynfcapp.ReaderActivity;
+import com.example.mynfcapp.PassCreation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.HashMap;
 
-public class Dashboard extends AppCompatActivity {
+public class DashboardSEC extends AppCompatActivity {
 
     ChipNavigationBar chipNavigationBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_dashboard_s_e_c);
 
         //User Session Details
         SessionManager sessionManager = new SessionManager(this, SessionManager.SESSION_USERSESSION);
@@ -38,11 +39,11 @@ public class Dashboard extends AppCompatActivity {
 
         //Hooks
         chipNavigationBar = findViewById(R.id.bottom_nav_menu);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragmentSEC()).commit();
         bottomMenu();
 
 
-        
+
     }
 
     private void bottomMenu() {
@@ -53,7 +54,7 @@ public class Dashboard extends AppCompatActivity {
                 Fragment fragment = null;
                 switch(i) {
                     case R.id.bottom_nav_dashboard:
-                        fragment = new DashboardFragment();
+                        fragment = new DashboardFragmentSEC();
                         break;
                     case R.id.bottom_nav_profile:
                         fragment = new ProfileFragment();
@@ -69,8 +70,19 @@ public class Dashboard extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), ReaderActivity.class);
         startActivity(intent);
     }
+
+    public void createPass(View view) {
+        Intent intent = new Intent(getApplicationContext(), PassCreation.class);
+        startActivity(intent);
+    }
+
     public void logoutUser(View view) {
-        //FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void callPrevScreen(View view) {
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
