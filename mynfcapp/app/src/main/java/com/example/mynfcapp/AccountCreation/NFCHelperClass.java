@@ -2,7 +2,8 @@ package com.example.mynfcapp.AccountCreation;
 
 public class NFCHelperClass {
 
-    String id, fullName, phoneNo, location, date, time;
+    String id, fullName, phoneNo, location, date, endDate, time, endTime;
+    boolean activated, voidTag;
 
 
     //Constructors
@@ -10,13 +11,19 @@ public class NFCHelperClass {
     public NFCHelperClass() {
     }
 
-    public NFCHelperClass(String id, String fullName, String phoneNo, String location, String date, String time) {
+
+
+    public NFCHelperClass(String id, String fullName, String phoneNo, String location, String date, String endDate, String time, String endTime, boolean activated, boolean voidTag) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNo = phoneNo;
         this.location = location;
         this.date = date;
+        this.endDate = endDate;
         this.time = time;
+        this.endTime = endTime;
+        this.activated = activated;
+        this.voidTag = voidTag;
     }
 
     public String getId() {
@@ -67,5 +74,36 @@ public class NFCHelperClass {
         this.time = time;
     }
 
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public boolean getVoidTag() {
+        return voidTag;
+    }
+
+    public void setVoidTag(boolean voidTag) {
+        this.voidTag = voidTag;
+    }
 
 }

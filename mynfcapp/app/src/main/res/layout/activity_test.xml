@@ -37,18 +37,18 @@
         android:textSize="15sp"/>
 
     <LinearLayout
-        android:paddingTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:orientation="vertical"
-        android:layout_marginTop="40dp">
+        android:paddingTop="70dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter the User's number:"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
 
         <com.hbb20.CountryCodePicker
@@ -56,33 +56,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/black_border"
+            android:padding="7dp"
             app:ccpDialog_textColor="@color/black"
             app:ccp_autoDetectCountry="true"
             app:ccp_showFlag="true"
             app:ccp_showFullName="true"
-            app:ccp_showNameCode="true"
-            android:padding="7dp"/>
+            app:ccp_showNameCode="true" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/book_phoneNo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone Number"
-            app:startIconDrawable="@drawable/phone_icon_small"
-            app:startIconTint="@color/black"
-            app:hintTextColor="@color/black"
             android:textColorHint="@color/black"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
             app:endIconMode="clear_text"
             app:endIconTint="@color/black"
-            app:boxStrokeWidthFocused="2dp"
-            app:boxStrokeColor="@color/black">
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/phone_icon_small"
+            app:startIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/book_phoneNo_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="phone"/>
+                android:inputType="phone" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -90,24 +90,24 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/book_fullname"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Full Name"
-            app:startIconDrawable="@drawable/username_icon_small"
-            app:startIconTint="@color/black"
-            app:hintTextColor="@color/black"
             android:textColorHint="@color/black"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
             app:endIconMode="clear_text"
             app:endIconTint="@color/black"
-            app:boxStrokeWidthFocused="2dp"
-            app:boxStrokeColor="@color/black">
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/username_icon_small"
+            app:startIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/book_fullname_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"/>
+                android:inputType="text" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -139,52 +139,83 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="25dp"
             android:layout_gravity="center"
+            android:paddingTop="25dp"
             android:text="Book the Date and Time:"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
 
         <Button
             android:id="@+id/dateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Date"
-            android:layout_marginTop="40dp"
             android:layout_gravity="center"
-            android:backgroundTint="#deb40b"/>
+            android:layout_marginTop="40dp"
+            android:backgroundTint="#deb40b"
+            android:text="Start Date" />
 
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/endDateButton"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="64dp"
-            android:text=""
-            android:layout_gravity="center"/>
-
+            android:layout_gravity="center"
+            android:backgroundTint="#deb40b"
+            android:text="End Date" />
 
         <Button
             android:id="@+id/timeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Time"
             android:layout_gravity="center"
-            android:backgroundTint="#deb40b"/>
+            android:backgroundTint="#deb40b"
+            android:text="Start Time" />
+
+        <Button
+            android:id="@+id/endTimeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#deb40b"
+            android:text="End Time" />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="15dp"
+            android:text="" />
+
+
+        <TextView
+            android:id="@+id/endDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="15dp"
+            android:text="" />
+
 
         <TextView
             android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="64dp"
-            android:text=""
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="15dp"
+            android:text="" />
 
-
-
-
+        <TextView
+            android:id="@+id/endTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="15dp"
+            android:text="" />
 
 
     </LinearLayout>

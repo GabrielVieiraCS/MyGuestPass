@@ -17,6 +17,7 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,9 @@ import java.io.Reader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,6 +62,8 @@ public class ReaderActivity extends Activity {
     private boolean isSec;
     private RelativeLayout rl;
 
+    private ImageView mainIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,7 @@ public class ReaderActivity extends Activity {
 
         //DESIGN
         rl = findViewById(R.id.reader_bg);
+        mainIcon = findViewById(R.id.reader_logo);
 
         //DATABASE
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -235,12 +241,20 @@ public class ReaderActivity extends Activity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String dateOnTag = snapshot.child(tagID).child("date").getValue(String.class);
+                        String endDateOnTag = snapshot.child(tagID).child("endDate").getValue(String.class);
                         String nameOnTag = snapshot.child(tagID).child("fullName").getValue(String.class);
                         String locationOnTag = snapshot.child(tagID).child("location").getValue(String.class);
                         String numOnTag = snapshot.child(tagID).child("phoneNo").getValue(String.class);
                         String timeOnTag = snapshot.child(tagID).child("time").getValue(String.class);
+                        String endTimeOnTag = snapshot.child(tagID).child("endTime").getValue(String.class);
+                        boolean activationStatus = snapshot.child(tagID).child("activated").getValue(boolean.class);
+                        boolean voidTagStatus = snapshot.child(tagID).child("voidTag").getValue(boolean.class);
 
-                        String finalMessage = ("Tag ID: " + tagID + "\n\nName: " + nameOnTag + "\nPhone Number: " + numOnTag + "\n\nDate: " + dateOnTag + "\nLocation: " + locationOnTag + "\nTime: " + timeOnTag);
+                        String finalMessage = ("Tag ID: " + tagID + "\n\nName: " + nameOnTag + "\nPhone Number: " + numOnTag + "\n\nDate: " + dateOnTag + " - " + endDateOnTag + "\nLocation: " + locationOnTag + "\nTime: " + timeOnTag + " - " + endTimeOnTag);
+
+                        if (dateOnTag.equals(endDateOnTag)) {
+                            finalMessage = ("Tag ID: " + tagID + "\n\nName: " + nameOnTag + "\nPhone Number: " + numOnTag + "\n\nDate: " + dateOnTag + "\nLocation: " + locationOnTag + "\nTime: " + timeOnTag + " - " + endTimeOnTag);
+                        }
 
                         //Format Tag Date
 
@@ -249,15 +263,46 @@ public class ReaderActivity extends Activity {
                         if (userNumber.equals(numOnTag) || isSec == true) {
                             text.setText(finalMessage);
 
-                            DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+                            //TO DO- CHANGE TO JUST DATE
+                            DateFormat format = new SimpleDateFormat("MMMM d, yyyy");
+                            DateFormat format2 = new SimpleDateFormat("HH:mm aa");
+
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+
                             try {
-                                Date eventDate = format.parse(dateOnTag);
-                                if (currDate.before(eventDate)) {
+                                LocalDate eventDate = LocalDate.parse(dateOnTag, formatter);
+                                LocalDate eventEndDate = LocalDate.parse(endDateOnTag, formatter);
+                                LocalDate currentDate = LocalDate.now();
+                                LocalTime eventTime = LocalTime.parse(timeOnTag);
+                                LocalTime eventEndTime = LocalTime.parse(endTimeOnTag);
+                                LocalTime currentTime = LocalTime.now();
+
+                                System.out.println("DEBUG123: " + eventDate + "\nTIME : " + eventTime);
+                                //Date eventDate = format.parse(dateOnTag);
+                                //Date eventEndDate = format.parse(endDateOnTag);
+                                //Date eventTime = format2.parse(timeOnTag);
+                                //Date eventEndTime = format2.parse(endTimeOnTag);
+
+                                //(currDate.equals(eventDate) && currTime.before(eventTime))
+                                //else if ((currDate.equals(eventDate) || (currDate.after(eventDate) && currDate.before(eventEndDate))) && (currTime.equals(eventEndTime) || (currTime.after(eventTime) && currTime.before(eventEndTime))))
+
+                                if (currentDate.isBefore(eventDate) || currentDate.isAfter(eventEndDate) || voidTagStatus == true) {
                                     rl.setBackgroundColor(Color.RED);
+                                    mainIcon.setImageResource(R.drawable.no_entry_icon_large); //512*512
+                                    System.out.println("CURR DATE = " + currDate + "\nDATE ON TAG = " + eventDate);
                                 } else {
                                     rl.setBackgroundColor(Color.GREEN);
-                                }
+                                    System.out.println("GREEEn CURR DATE = " + currDate + "\nDATE ON TAG = " + eventDate);
+                                    mainIcon.setImageResource(R.drawable.check_mark_icon_large); //512*512
+
+                                    //MARK TAG AS ACTIVATED
+                                    FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
+                                    DatabaseReference reference = rootNode.getReference("Tags");
+                                    reference.child(tagID).child("activated").setValue(true);
+                                    throw new Exception("This is an exception");                                }
                             } catch (ParseException e) {
+                                e.printStackTrace();
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 

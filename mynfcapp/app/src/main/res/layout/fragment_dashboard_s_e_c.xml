@@ -45,14 +45,14 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginTop="50dp"
-            android:background="#e4e7ed"
+            android:background="#deb40b"
             android:padding="10dp">
 
             <ImageView
                 android:id="@+id/nfc_icon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/nfc_icon_small"
+                android:src="@drawable/nfc_icon_large"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"/>
 
@@ -94,14 +94,14 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginTop="20dp"
-            android:background="#e4e7ed"
+            android:background="#deb40b"
             android:padding="10dp">
 
             <ImageView
                 android:id="@+id/ticket_icon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/ticket_icon_small"
+                android:src="@drawable/ticket_icon_large"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"/>
 

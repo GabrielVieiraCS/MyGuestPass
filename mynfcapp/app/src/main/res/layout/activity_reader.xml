@@ -9,7 +9,7 @@
     android:id="@+id/reader_bg">
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/reader_logo"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="50dp"
@@ -28,6 +28,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="50dp"
         android:gravity="center_horizontal"
-        android:layout_below="@id/logo"/>
+        android:layout_below="@id/reader_logo"/>
 
 </RelativeLayout>

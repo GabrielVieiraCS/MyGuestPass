@@ -47,8 +47,8 @@ public class PassCreation extends Activity {
     TextInputLayout phoneNo, name, location;
     CountryCodePicker countryCodePicker;
 
-    Button dateButton, timeButton;
-    TextView dateTextView, timeTextView;
+    Button dateButton, timeButton, endDateButton, endTimeButton;
+    TextView dateTextView, timeTextView, endDateTextView, endTimeTextView;
 
 
 
@@ -70,9 +70,13 @@ public class PassCreation extends Activity {
         countryCodePicker = findViewById(R.id.book_country_code_picker);
 
         dateButton = findViewById(R.id.dateButton);
+        endDateButton = findViewById(R.id.endDateButton);
         timeButton = findViewById(R.id.timeButton);
+        endTimeButton = findViewById(R.id.endTimeButton);
         dateTextView = findViewById(R.id.dateTextView);
+        endDateTextView = findViewById(R.id.endDateTextView);
         timeTextView = findViewById(R.id.timeTextView);
+        endTimeTextView = findViewById(R.id.endTimeTextView);
 
 
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
@@ -93,6 +97,18 @@ public class PassCreation extends Activity {
                 handleTimeButton();
             }
         });
+        endDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleEndDateButton();
+            }
+        });
+        endTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleEndTimeButton();
+            }
+        });
     }
 
     private void handleTimeButton() {
@@ -109,7 +125,7 @@ public class PassCreation extends Activity {
                 calendar1.set(Calendar.HOUR_OF_DAY, hour);
                 calendar1.set(Calendar.MINUTE, minute);
 
-                CharSequence charSequence = DateFormat.format("HH:mm aa", calendar1);
+                CharSequence charSequence = DateFormat.format("HH:mm", calendar1);
                 timeTextView.setText(charSequence);
             }
         }, HOUR, MINUTE, is24HourFormat);
@@ -134,6 +150,51 @@ public class PassCreation extends Activity {
 
                 CharSequence dateCharSequence = DateFormat.format("MMM d, yyyy", calendar1);
                 dateTextView.setText(dateCharSequence);
+            }
+        }, YEAR, MONTH, DATE);
+
+        datePickerDialog.show();
+    }
+
+    private void handleEndTimeButton() {
+        Calendar calendar = Calendar.getInstance();
+        int HOUR = calendar.get(Calendar.HOUR_OF_DAY);
+        int MINUTE = calendar.get(Calendar.MINUTE);
+
+        boolean is24HourFormat = DateFormat.is24HourFormat(this);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.set(Calendar.HOUR_OF_DAY, hour);
+                calendar2.set(Calendar.MINUTE, minute);
+
+                CharSequence charSequence = DateFormat.format("HH:mm", calendar2);
+                endTimeTextView.setText(charSequence);
+            }
+        }, HOUR, MINUTE, is24HourFormat);
+
+        timePickerDialog.show();
+    }
+
+    private void handleEndDateButton() {
+        Calendar calendar = Calendar.getInstance();
+        int YEAR = calendar.get(Calendar.YEAR);
+        int MONTH = calendar.get(Calendar.MONTH);
+        int DATE =  calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int date) {
+
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.set(Calendar.YEAR, year);
+                calendar2.set(Calendar.MONTH, month);
+                calendar2.set(Calendar.DATE, date);
+
+                CharSequence dateCharSequence = DateFormat.format("MMM d, yyyy", calendar2);
+                endDateTextView.setText(dateCharSequence);
             }
         }, YEAR, MONTH, DATE);
 
@@ -183,7 +244,9 @@ public class PassCreation extends Activity {
                 String _fullName = name.getEditText().getText().toString().trim();
                 String _location = location.getEditText().getText().toString().trim();
                 String _date = dateTextView.getText().toString().trim();
+                String _endDate = endDateTextView.getText().toString().trim();
                 String _time = timeTextView.getText().toString().trim();
+                String _endTime = endTimeTextView.getText().toString().trim();
 
                 //Use Case handle of user input 0
                 if (_phoneNumber.charAt(0) == '0') {
@@ -199,7 +262,7 @@ public class PassCreation extends Activity {
                 FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
                 DatabaseReference reference = rootNode.getReference("Tags");
 
-                NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _time);
+                NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
                 reference.child(uniqueID).setValue(addNewTag);
 
                 writeNdefMessage(tag, ndefMessage);
@@ -209,7 +272,7 @@ public class PassCreation extends Activity {
                     rootNode = FirebaseDatabase.getInstance();
                     reference = rootNode.getReference("Tags");
 
-                    addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _time);
+                    addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
                     reference.child(uniqueID).setValue(addNewTag);
                 }
             }

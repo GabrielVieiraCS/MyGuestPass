@@ -7,8 +7,9 @@
     android:background="#FF9800">
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="#deb40b"
         android:layout_marginTop="300dp"
         android:text="Log-Out"
