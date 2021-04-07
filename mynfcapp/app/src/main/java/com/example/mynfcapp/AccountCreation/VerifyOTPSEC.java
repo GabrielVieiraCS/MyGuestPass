@@ -137,7 +137,7 @@ public class VerifyOTPSEC extends Activity {
         FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
         DatabaseReference reference = rootNode.getReference("Security");
 
-        UserHelperClass addNewUser = new UserHelperClass(fullName, email, phoneNo, password, date, gender);
+        UserHelperClassSEC addNewUser = new UserHelperClassSEC(fullName, email, phoneNo, password, date, gender, false);
         reference.child(phoneNo).setValue(addNewUser);
 
     }

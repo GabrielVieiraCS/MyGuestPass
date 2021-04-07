@@ -16,6 +16,14 @@
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"/>
 
+    <ImageView
+        android:id="@+id/user_photo_imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="invisible"
+        android:layout_below="@+id/reader_logo"
+        android:layout_centerHorizontal="true"/>
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
@@ -29,5 +37,25 @@
         android:layout_marginTop="50dp"
         android:gravity="center_horizontal"
         android:layout_below="@id/reader_logo"/>
+
+    <com.chaos.view.PinView
+        android:id="@+id/pin_view_reader"
+        style="@style/PinWidget.PinView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:cursorVisible="true"
+        android:inputType="number"
+        android:itemBackground="#e4e7ed"
+        app:cursorColor="@color/black"
+        app:hideLineWhenFilled="true"
+        app:itemCount="6"
+        app:itemHeight="50dp"
+        app:itemRadius="5dp"
+        app:itemWidth="50dp"
+        app:lineColor="@color/black"
+        android:layout_centerInParent="true"
+        android:paddingBottom="200dp"
+        android:visibility="gone"/>
 
 </RelativeLayout>

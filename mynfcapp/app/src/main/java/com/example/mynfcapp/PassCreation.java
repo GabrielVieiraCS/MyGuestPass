@@ -1,43 +1,71 @@
 package com.example.mynfcapp;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.Image;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 import com.example.mynfcapp.AccountCreation.NFCHelperClass;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import static android.nfc.NfcAdapter.getDefaultAdapter;
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class PassCreation extends Activity {
 
@@ -47,10 +75,15 @@ public class PassCreation extends Activity {
     TextInputLayout phoneNo, name, location;
     CountryCodePicker countryCodePicker;
 
-    Button dateButton, timeButton, endDateButton, endTimeButton;
+    Button dateButton, timeButton, endDateButton, endTimeButton, cameraButton;
     TextView dateTextView, timeTextView, endDateTextView, endTimeTextView;
+    ImageView cameraImage;
 
-
+    StorageReference storageReference;
+    boolean imageTaken;
+    String pathToFile, fileName;
+    File image;
+    Uri photoUri;
 
 
     @Override
@@ -77,6 +110,26 @@ public class PassCreation extends Activity {
         endDateTextView = findViewById(R.id.endDateTextView);
         timeTextView = findViewById(R.id.timeTextView);
         endTimeTextView = findViewById(R.id.endTimeTextView);
+
+        cameraButton = findViewById(R.id.cameraButton);
+        cameraImage = findViewById(R.id.camera_image);
+        imageTaken = false;
+
+        //FIREBASE STORAGE REF
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        //REQUEST CAMERA PERMISSION
+        if (Build.VERSION.SDK_INT >= 23) {
+            requestPermissions(new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        }
+
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Open Camera
+                dispatchPictureTakerAction();
+            }
+        });
 
 
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
@@ -109,6 +162,110 @@ public class PassCreation extends Activity {
                 handleEndTimeButton();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
+                ExifInterface ei = null;
+                try {
+                    ei = new ExifInterface(pathToFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_UNDEFINED);
+
+                Bitmap rotatedBitmap = null;
+                switch(orientation) {
+
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotatedBitmap = rotateImage(bitmap, 90);
+                        break;
+
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotatedBitmap = rotateImage(bitmap, 180);
+                        break;
+
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotatedBitmap = rotateImage(bitmap, 270);
+                        break;
+
+                    case ExifInterface.ORIENTATION_NORMAL:
+                    default:
+                        rotatedBitmap = bitmap;
+                }
+
+                cameraImage.setImageBitmap(rotatedBitmap);
+
+                imageTaken = true;
+            }
+        }
+
+    }
+
+    private void dispatchPictureTakerAction() {
+        Intent takePic = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePic.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            photoFile = createPhotoFile();
+
+            if (photoFile != null) {
+                pathToFile = photoFile.getAbsolutePath();
+                photoUri = FileProvider.getUriForFile(PassCreation.this, "com.example.mynfcapp.fileprovider", photoFile);
+                setUri(photoUri);
+                takePic.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(takePic, 1);
+            }
+        }
+    }
+
+    private File createPhotoFile() {
+        String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        image = null;
+        try {
+            image = File.createTempFile(fileName, ".jpg", storageDir);
+        } catch (IOException e) {
+            Log.d("mylog", "Exception: " + e.toString());
+        }
+        setImage(image);
+        setFileName(fileName);
+        return image;
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
+
+    private void setImage (File image) {
+        this.image =  image;
+    }
+
+    private File getImage () {
+        return image;
+    }
+
+    private void setUri (Uri imageUri) {
+        this.photoUri = imageUri;
+    }
+
+    private Uri getUri () {
+        return photoUri;
+    }
+
+    private void setFileName (String fileName) {
+        this.fileName =  fileName;
+    }
+
+    private String getFileName () {
+        return fileName;
     }
 
     private void handleTimeButton() {
@@ -262,17 +419,44 @@ public class PassCreation extends Activity {
                 FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
                 DatabaseReference reference = rootNode.getReference("Tags");
 
-                NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
-                reference.child(uniqueID).setValue(addNewTag);
+                //IF IMAGE IS ATTATCHED
+                if (pathToFile != null) {
+                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false, getFileName());
+                    reference.child(uniqueID).setValue(addNewTag);
 
-                writeNdefMessage(tag, ndefMessage);
+                    writeNdefMessage(tag, ndefMessage);
+
+                    //UPLOAD IMAGE TO FIREBASE
+                    StorageReference imageRef = storageReference.child("images/"+getFileName());
+
+                    UploadTask uploadTask = imageRef.putFile(getUri());
+
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(PassCreation.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(PassCreation.this, "Upload Failed -> " + e, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                } else {
+                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
+                    reference.child(uniqueID).setValue(addNewTag);
+
+                    writeNdefMessage(tag, ndefMessage);
+                }
+
 
                 if (tglLockTag.isChecked()) {
                     makeTagReadOnly(tag);
                     rootNode = FirebaseDatabase.getInstance();
                     reference = rootNode.getReference("Tags");
 
-                    addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
+                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
                     reference.child(uniqueID).setValue(addNewTag);
                 }
             }

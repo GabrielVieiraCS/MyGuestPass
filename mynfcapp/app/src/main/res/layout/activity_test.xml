@@ -153,6 +153,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:backgroundTint="#deb40b"
+            android:drawableLeft="@drawable/startdate_icon_small"
             android:text="Start Date" />
 
         <Button
@@ -161,6 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="#deb40b"
+            android:drawableLeft="@drawable/enddate_icon_small"
             android:text="End Date" />
 
         <Button
@@ -169,6 +171,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="#deb40b"
+            android:drawableLeft="@drawable/starttime_icon_small"
             android:text="Start Time" />
 
         <Button
@@ -177,7 +180,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="#deb40b"
+            android:drawableLeft="@drawable/endtime_icon_small"
             android:text="End Time" />
+
+        <Button
+            android:id="@+id/cameraButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#deb40b"
+            android:drawableLeft="@drawable/camera_icon_small"
+            android:text= " Camera"/>
 
         <TextView
             android:id="@+id/dateTextView"
@@ -216,6 +229,12 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="15dp"
             android:text="" />
+
+        <ImageView
+            android:id="@+id/camera_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
 
 
     </LinearLayout>

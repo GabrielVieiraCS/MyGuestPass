@@ -1,8 +1,10 @@
 package com.example.mynfcapp.AccountCreation;
 
+import android.net.Uri;
+
 public class NFCHelperClass {
 
-    String id, fullName, phoneNo, location, date, endDate, time, endTime;
+    String id, fullName, phoneNo, location, date, endDate, time, endTime, fileName;
     boolean activated, voidTag;
 
 
@@ -24,6 +26,22 @@ public class NFCHelperClass {
         this.endTime = endTime;
         this.activated = activated;
         this.voidTag = voidTag;
+    }
+
+
+    //With image
+    public NFCHelperClass(String id, String fullName, String phoneNo, String location, String date, String endDate, String time, String endTime, boolean activated, boolean voidTag, String fileName) {
+        this.id = id;
+        this.fullName = fullName;
+        this.phoneNo = phoneNo;
+        this.location = location;
+        this.date = date;
+        this.endDate = endDate;
+        this.time = time;
+        this.endTime = endTime;
+        this.activated = activated;
+        this.voidTag = voidTag;
+        this.fileName = fileName;
     }
 
     public String getId() {
@@ -104,6 +122,14 @@ public class NFCHelperClass {
 
     public void setVoidTag(boolean voidTag) {
         this.voidTag = voidTag;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String imageUri) {
+        this.fileName = fileName;
     }
 
 }
