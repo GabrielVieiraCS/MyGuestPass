@@ -21,11 +21,10 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:id="@+id/tglLockTag"
-        android:textOn="Do not lock tag"
-        android:textOff="Lock Tag"
+        android:textOn="Lock Tag"
+        android:textOff="Not Locked"
         android:checked="false"
-        android:layout_below="@+id/tglReadWrite"
-        android:onClick="tglReadWriteOnClick"/>
+        android:layout_below="@+id/tglReadWrite" />
 
     <TextView
         android:gravity="center"

@@ -5,7 +5,7 @@ import android.net.Uri;
 public class NFCHelperClass {
 
     String id, fullName, phoneNo, location, date, endDate, time, endTime, fileName;
-    boolean activated, voidTag;
+    boolean activated, voidTag, tagLock;
 
 
     //Constructors
@@ -15,7 +15,7 @@ public class NFCHelperClass {
 
 
 
-    public NFCHelperClass(String id, String fullName, String phoneNo, String location, String date, String endDate, String time, String endTime, boolean activated, boolean voidTag) {
+    public NFCHelperClass(String id, String fullName, String phoneNo, String location, String date, String endDate, String time, String endTime, boolean activated, boolean voidTag, boolean tagLock) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNo = phoneNo;
@@ -30,7 +30,7 @@ public class NFCHelperClass {
 
 
     //With image
-    public NFCHelperClass(String id, String fullName, String phoneNo, String location, String date, String endDate, String time, String endTime, boolean activated, boolean voidTag, String fileName) {
+    public NFCHelperClass(String id, String fullName, String phoneNo, String location, String date, String endDate, String time, String endTime, boolean activated, boolean voidTag, String fileName, boolean tagLock) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNo = phoneNo;
@@ -130,6 +130,14 @@ public class NFCHelperClass {
 
     public void setFileName(String imageUri) {
         this.fileName = fileName;
+    }
+
+    public boolean isTagLock() {
+        return tagLock;
+    }
+
+    public void setTagLock(boolean tagLock) {
+        this.tagLock = tagLock;
     }
 
 }

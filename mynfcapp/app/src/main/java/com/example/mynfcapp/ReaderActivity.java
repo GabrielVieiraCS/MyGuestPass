@@ -338,6 +338,7 @@ public class ReaderActivity extends Activity {
 
                                                     RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
                                                     p.addRule(RelativeLayout.BELOW, R.id.user_photo_imageView);
+                                                    text.setLayoutParams(p);
                                                     String pathToFile = localFile.getAbsolutePath();
 
                                                     user_photo.setVisibility(View.VISIBLE);

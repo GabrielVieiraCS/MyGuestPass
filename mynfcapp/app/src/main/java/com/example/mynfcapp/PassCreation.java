@@ -80,7 +80,7 @@ public class PassCreation extends Activity {
     ImageView cameraImage;
 
     StorageReference storageReference;
-    boolean imageTaken;
+    boolean imageTaken, tagLock;
     String pathToFile, fileName;
     File image;
     Uri photoUri;
@@ -420,8 +420,8 @@ public class PassCreation extends Activity {
                 DatabaseReference reference = rootNode.getReference("Tags");
 
                 //IF IMAGE IS ATTATCHED
-                if (pathToFile != null) {
-                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false, getFileName());
+                if (pathToFile != null && tglLockTag.isChecked()) {
+                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false, getFileName(), tagLock = true);
                     reference.child(uniqueID).setValue(addNewTag);
 
                     writeNdefMessage(tag, ndefMessage);
@@ -443,21 +443,27 @@ public class PassCreation extends Activity {
                         }
                     });
 
-                } else {
-                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
-                    reference.child(uniqueID).setValue(addNewTag);
-
+                } else if (tglLockTag.isChecked()) {
                     writeNdefMessage(tag, ndefMessage);
-                }
-
-
-                if (tglLockTag.isChecked()) {
                     makeTagReadOnly(tag);
+                    Toast.makeText(this, "TAG LOCKED!", Toast.LENGTH_SHORT).show();
                     rootNode = FirebaseDatabase.getInstance();
                     reference = rootNode.getReference("Tags");
 
-                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false);
+                    NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false,  tagLock = true);
                     reference.child(uniqueID).setValue(addNewTag);
+
+                    //NFCHelperClass addNewTag = new NFCHelperClass(uniqueID, _fullName, _completePhoneNumber, _location, _date, _endDate, _time, _endTime, false, false, tagLock = false);
+                    //reference.child(uniqueID).setValue(addNewTag); //COMMENT OUT
+
+
+                }
+
+
+                if (!tglLockTag.isChecked()) {
+
+                    Toast.makeText(this, "TAG NEEDS TO BE LOCKED!", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -615,6 +621,7 @@ public class PassCreation extends Activity {
                 if (ndef.canMakeReadOnly()) {
 
                     ndef.makeReadOnly();
+                    Toast.makeText(this, "READ ONLY", Toast.LENGTH_SHORT).show();
                 }
 
                 ndef.close();
